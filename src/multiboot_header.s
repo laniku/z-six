@@ -1,26 +1,27 @@
-    .section .multiboot_header, "a"
+.section .multiboot_header, "a"
     .align 8
     .globl multiboot_header
 multiboot_header:
-    .long 0xe85250d6
+    # Header
+    .long 0xe85250d6          # Multiboot2 magic
+    .long 0                   # i386 arch
+    .long header_end - multiboot_header
+    .long -(0xe85250d6 + 0 + (header_end - multiboot_header))
 
-    .long 0
+    # Framebuffer tag
+    .align 8
+    .word 5                   # Framebuffer tag type
+    .word 0                   # Flags
+    .long 20                  # Size
+    .long 640                 # Width
+    .long 480                 # Height
+    .long 16                  # Depth
 
-    .long multiboot_header_end - multiboot_header
+    # End tag
+    .align 8
+    .word 0                   # End tag type
+    .word 0                   # Flags
+    .long 8                   # Size
 
-    .long -(0xe85250d6 + 0 + (multiboot_header_end - multiboot_header))
-
-    .long 6
-    .long 0
-    .long 20
-    .long 640
-    .long 480
-    .word 16
-    .word 0
-
-
-    .long 0
-    .long 0
-    .long 8
-
-multiboot_header_end:
+    .align 8
+header_end:
